@@ -25,8 +25,7 @@ class KBank():
         txtParam = self.__get_txtParam()
         self.__nav_welcome(txtParam)
         data = self.__nav_statement()
-        statement_lst = self.__get_statement_lst(
-            data['token'], data['action'], data['st'])
+        statement_lst = self.__get_statement_lst(data)
 
         return statement_lst
 
@@ -73,14 +72,14 @@ class KBank():
         st = soup.find("input", {"name": "st"}).get('value')
         return {'token': token, 'action': action, 'st': st}
 
-    def __get_statement_lst(self, token, action, st):
+    def __get_statement_lst(self, data):
         self.header['Referer'] = 'https://ebank.kasikornbankgroup.com/retail/cashmanagement/TodayAccountStatementInquiry.do'
         payload = {
-            'org.apache.struts.taglib.html.TOKEN': token,
+            'org.apache.struts.taglib.html.TOKEN': data['token'],
             'captcha_check': 'null',
             'acctId': '20200723752659',
-            'action': action,
-            'st': st
+            'action': data['action'],
+            'st': data['st']
         }
         res = self.session.post(
             'https://ebank.kasikornbankgroup.com/retail/cashmanagement/TodayAccountStatementInquiry.do', headers=self.header, data=payload)

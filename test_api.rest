@@ -12,3 +12,12 @@ content-type: {{contentType}}
   "password": "gotgat77"
 }
 ###
+
+POST http://{{host}}/Get/BAY
+content-type: {{contentType}}
+
+{
+  "username": "jipjip39",
+  "password": "jopjop38"
+}
+###
