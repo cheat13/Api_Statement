@@ -5,18 +5,16 @@ from datetime import datetime, timezone
 from Models.statement import Statement
 
 
-class BAY(object):
-    def __init__(self, username, password):
-        self.username = username
-        self.password = password
+class BAY():
+    def __init__(self):
         self.session = requests.session()
         self.user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36'
         self.content_type = 'application/x-www-form-urlencoded'
         self.url = 'https://www.krungsribizonline.com'
 
-    def get_statement_lst(self):
+    def get_statement_lst(self, username, password):
         data = self.__nav_login()
-        referer = self.__login(data)
+        referer = self.__login(data, username, password)
         href = self.__getMainMenu(referer)
         referer2 = self.__nav_pageCase(referer, href)
         statement_lst = self.__get_statement_lst(referer2)
@@ -62,7 +60,7 @@ class BAY(object):
             '__EVENTVALIDATION': __EVENTVALIDATION
         }
 
-    def __login(self, data):
+    def __login(self, data, username, password):
         HEADER = {
             'Cache-Control': 'max-age=0',
             'Connection': 'keep-alive',
@@ -88,8 +86,8 @@ class BAY(object):
             '__PREVIOUSPAGE': data['__PREVIOUSPAGE'],
             '__EVENTVALIDATION': data['__EVENTVALIDATION'],
             'ctl00$cphLoginBox$hddLanguage': 'TH',
-            'ctl00$cphLoginBox$txtUsernameSME': self.username,
-            'ctl00$cphLoginBox$hdPassword': self.password
+            'ctl00$cphLoginBox$txtUsernameSME': username,
+            'ctl00$cphLoginBox$hdPassword': password
         }
 
         res = self.session.post(

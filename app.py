@@ -3,34 +3,24 @@ from kbank import KBank
 from bay import BAY
 
 app = Flask(__name__)
+bank_type = {'kbank': KBank(), 'bay': BAY()}
 
 
-@app.route('/Get/KBank', methods=['POST'])
-def KBank_Statement():
+@app.route('/<bank_name>', methods=['POST'])
+def Get_Statement(bank_name):
     try:
-        data = request.get_json()
-        username = data["username"]
-        password = data["password"]
+        name = bank_name.lower()
+        if not name in bank_type:
+            return {'message': 'bank name invalid!'}, 400
+        else:
+            bank = bank_type[name]
 
-        bank = KBank(username, password)
-        statement_lst = bank.get_statement_lst()
+            data = request.get_json()
+            username = data["username"]
+            password = data["password"]
 
-        return jsonify(statement_lst)
-    except:
-        return {'message': 'username or password invalid!'}, 400
-
-
-@app.route('/Get/BAY', methods=['POST'])
-def BAY_Statement():
-    try:
-        data = request.get_json()
-        username = data["username"]
-        password = data["password"]
-
-        bank = BAY(username, password)
-        statement_lst = bank.get_statement_lst()
-
-        return jsonify(statement_lst)
+            statement_lst = bank.get_statement_lst(username, password)
+            return jsonify(statement_lst)
     except:
         return {'message': 'username or password invalid!'}, 400
 

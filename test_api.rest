@@ -1,10 +1,10 @@
 @host = 127.0.0.1:5000
 @contentType = application/json
 
-GET http://{{host}}/Get/KBank
+GET http://{{host}}/KBank
 ###
 
-POST http://{{host}}/Get/KBank
+POST http://{{host}}/KBank
 content-type: {{contentType}}
 
 {
@@ -13,7 +13,7 @@ content-type: {{contentType}}
 }
 ###
 
-POST http://{{host}}/Get/BAY
+POST http://{{host}}/BAY
 content-type: {{contentType}}
 
 {

@@ -6,9 +6,7 @@ from Models.statement import Statement
 
 
 class KBank():
-    def __init__(self, username, password):
-        self.username = username
-        self.password = password
+    def __init__(self):
         self.session = requests.session()
         self.user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36'
         self.content_type = 'application/x-www-form-urlencoded'
@@ -19,9 +17,9 @@ class KBank():
             'Origin': self.url
         }
 
-    def get_statement_lst(self):
+    def get_statement_lst(self, username, password):
         token = self.__get_token()
-        self.__login(token)
+        self.__login(token, username, password)
         txtParam = self.__get_txtParam()
         self.__nav_welcome(txtParam)
         data = self.__nav_statement()
@@ -35,12 +33,12 @@ class KBank():
         token = soup.find("input", {"name": "tokenId"}).get('value') + '0'
         return token
 
-    def __login(self, token):
+    def __login(self, token, username, password):
         self.header['Referer'] = self.url+'/K-Online/login.do'
         payload = {
             'tokenId': token,
-            'userName': self.username,
-            'password': self.password,
+            'userName': username,
+            'password': password,
             'cmd': 'authenticate',
             'locale': 'th',
             'app': '0'
