@@ -12,6 +12,16 @@ content-type: {{contentType}}
 
 ###
 
+POST http://{{host}}/SCB
+content-type: {{contentType}}
+
+{
+  "username": "gotgot7",
+  "password": "Gotgat77"
+}
+
+###
+
 POST http://{{host}}/BAY
 content-type: {{contentType}}
 

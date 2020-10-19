@@ -22,8 +22,8 @@ class KBank():
         self.__login(token, username, password)
         txtParam = self.__get_txtParam()
         self.__nav_welcome(txtParam)
-        data = self.__nav_statement()
-        statement_lst = self.__get_statement_lst(data)
+        token, action, st = self.__nav_statement()
+        statement_lst = self.__get_statement_lst(token, action, st)
 
         return statement_lst
 
@@ -68,16 +68,16 @@ class KBank():
             "input", {"name": "org.apache.struts.taglib.html.TOKEN"}).get('value')
         action = soup.find("input", {"name": "action"}).get('value')
         st = soup.find("input", {"name": "st"}).get('value')
-        return {'token': token, 'action': action, 'st': st}
+        return (token, action, st)
 
-    def __get_statement_lst(self, data):
+    def __get_statement_lst(self, token, action, st):
         self.header['Referer'] = 'https://ebank.kasikornbankgroup.com/retail/cashmanagement/TodayAccountStatementInquiry.do'
         payload = {
-            'org.apache.struts.taglib.html.TOKEN': data['token'],
+            'org.apache.struts.taglib.html.TOKEN': token,
             'captcha_check': 'null',
             'acctId': '20200723752659',
-            'action': data['action'],
-            'st': data['st']
+            'action': action,
+            'st': st
         }
         res = self.session.post(
             'https://ebank.kasikornbankgroup.com/retail/cashmanagement/TodayAccountStatementInquiry.do', headers=self.header, data=payload)
@@ -97,9 +97,7 @@ class KBank():
                     date_string = ' '.join(str(qry).split())
                     date = datetime.strptime(
                         date_string, "%d/%m/%y %H:%M:%S").astimezone(timezone.utc)
-
                     amount = float(amount_string)
-
                     number = trans.find_all(
                         "td", {"class": "inner_table_center"})[2].text
 

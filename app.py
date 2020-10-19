@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from kbank import KBank
 from bay import BAY
+from scb import SCB
 
 app = Flask(__name__)
 
@@ -8,7 +9,7 @@ app = Flask(__name__)
 @app.route('/<bank_name>', methods=['POST'])
 def Get_Statement(bank_name):
     try:
-        bank_dict = {'kbank': KBank(), 'bay': BAY()}
+        bank_dict = {'kbank': KBank(), 'bay': BAY(), 'scb': SCB()}
         bank_name = bank_name.lower()
 
         if bank_name in bank_dict:

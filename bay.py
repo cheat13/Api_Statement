@@ -16,8 +16,8 @@ class BAY():
         data = self.__nav_login()
         referer = self.__login(data, username, password)
         href = self.__getMainMenu(referer)
-        referer2 = self.__nav_pageCase(referer, href)
-        statement_lst = self.__get_statement_lst(referer2)
+        referer = self.__nav_pageCase(referer, href)
+        statement_lst = self.__get_statement_lst(referer)
 
         return statement_lst
 
@@ -168,8 +168,7 @@ class BAY():
             date_string = str(st['TranDateTime'])
             date = datetime.strptime(
                 date_string, "%Y-%m-%dT%H:%M:%S").astimezone(timezone.utc)
-
-            amount = st['TranAmount']
+            amount = float(st['TranAmount'])
             number = st['TranDetailTH'].split()[1]
 
             statement = Statement(date, amount, number)
