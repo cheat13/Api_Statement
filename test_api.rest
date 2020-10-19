@@ -1,8 +1,6 @@
 @host = 127.0.0.1:5000
 @contentType = application/json
 
-GET http://{{host}}/KBank
-###
 
 POST http://{{host}}/KBank
 content-type: {{contentType}}
@@ -11,6 +9,7 @@ content-type: {{contentType}}
   "username": "gotgot7",
   "password": "gotgat77"
 }
+
 ###
 
 POST http://{{host}}/BAY
@@ -20,4 +19,5 @@ content-type: {{contentType}}
   "username": "jipjip39",
   "password": "jopjop38"
 }
+
 ###

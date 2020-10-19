@@ -88,21 +88,22 @@ class KBank():
 
         statement_lst = []
 
-        for trans in transaction:
-            amount_string = trans.find_all(
-                "td", {"class": "inner_table_center"})[1].text
-            if amount_string:
-                qry = trans.find("td", {"class": "inner_table_left"}).text
-                date_string = ' '.join(str(qry).split())
-                date = datetime.strptime(
-                    date_string, "%d/%m/%y %H:%M:%S").astimezone(timezone.utc)
+        if "ไม่พบรายการนี้" not in transaction[0].text:
+            for trans in transaction:
+                amount_string = trans.find_all(
+                    "td", {"class": "inner_table_center"})[1].text
+                if amount_string:
+                    qry = trans.find("td", {"class": "inner_table_left"}).text
+                    date_string = ' '.join(str(qry).split())
+                    date = datetime.strptime(
+                        date_string, "%d/%m/%y %H:%M:%S").astimezone(timezone.utc)
 
-                amount = float(amount_string)
+                    amount = float(amount_string)
 
-                number = trans.find_all(
-                    "td", {"class": "inner_table_center"})[2].text
+                    number = trans.find_all(
+                        "td", {"class": "inner_table_center"})[2].text
 
-                statement = Statement(date, amount, number)
-                statement_lst.append(statement.__dict__)
+                    statement = Statement(date, amount, number)
+                    statement_lst.append(statement.__dict__)
 
         return statement_lst
