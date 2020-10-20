@@ -177,7 +177,7 @@ class SCB():
                 data = tst.find_all("td")
                 date_text = f'{data[0].text} {data[1].text}'
                 amount_text = data[5].text
-                if 'รวม' not in date_text and '+' in amount_text:
+                if 'รวม' not in date_text and amount_text.startswith('+'):
                     date = datetime.strptime(
                         date_text, "%d/%m/%Y %H:%M").astimezone(timezone.utc)
                     amount = float(amount_text[1:])
