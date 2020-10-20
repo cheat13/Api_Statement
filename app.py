@@ -16,8 +16,8 @@ def Get_Statement(bank_name):
             bank = bank_dict[bank_name]
 
             data = request.get_json()
-            username = data["username"]
-            password = data["password"]
+            username = data.get("username")
+            password = data.get("password")
 
             statement_lst = bank.get_statement_lst(username, password)
             return jsonify(statement_lst)
